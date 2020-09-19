@@ -31,5 +31,5 @@ var role = new Schema({
     date:Date
 
 });
-caseSchema.plugin(timestamps);
+role.plugin(timestamps);
 module.exports = mongoose.model('role', role);
