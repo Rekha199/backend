@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var timestamps = require('mongoose-timestamp');
 const Schema = mongoose.Schema;
 
 var role = new Schema({
@@ -26,8 +27,9 @@ var role = new Schema({
     isDeleteFlag:{
         type:Boolean,
         default:false
-    }
+    },
+    date:Date
 
 });
-
+caseSchema.plugin(timestamps);
 module.exports = mongoose.model('role', role);
