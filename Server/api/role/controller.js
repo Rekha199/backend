@@ -7,10 +7,8 @@ async function create(req, res) {
         let roleDetail = new roleModel();
         roleDetail.name = get(req, 'body.name', '');
         roleDetail.permissionRefId= get(req,'body.permissionRefId','');
-        roleDetail.date=get(req,'body.date','');
         console.log('Before Save Successfully.',roleDetail);
         await roleDetail.save();
-        // await roleDetail.save().exec();
         console.log('Document Save Successfully.');
         return {
             status: 200,

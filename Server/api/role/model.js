@@ -27,8 +27,7 @@ var role = new Schema({
     isDeleteFlag:{
         type:Boolean,
         default:false
-    },
-    date:Date
+    }
 
 });
 role.plugin(timestamps);
