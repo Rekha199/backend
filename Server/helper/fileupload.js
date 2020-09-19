@@ -1,5 +1,4 @@
 const multer = require("multer");
-// const data=require("../helper/uploads")
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -12,5 +11,4 @@ const storage = multer.diskStorage({
     }
   });
 const upload = multer({ storage: storage });
-console.log('Upload....',upload)
 module.exports = upload;

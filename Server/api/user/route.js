@@ -24,9 +24,9 @@ async function deleteRecord(req, res) {
 }
 
 
-router.post('/', post);
+router.post('/',fileUpload.single('image'), post);
 router.get('/?', get);
-router.put('/?', put);
+router.put('/?',fileUpload.single('image'), put);
 router.delete('/?', deleteRecord);
 
 module.exports=router;
