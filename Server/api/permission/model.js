@@ -10,8 +10,16 @@ var permission = new Schema({
     },
     childName: [{
         name: String,
-        url: String
-    }]
+        url: String,
+        isSubChild: {
+            type: Boolean,
+            default: false
+        },
+        subChildName: [{
+            name: String,
+            url: String
+        }]
+    }],
 });
 
 module.exports = mongoose.model('permission', permission);

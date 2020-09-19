@@ -7,11 +7,16 @@ async function create(req, res) {
         if (!req.query.id) {
             let permissionDetail = new permissionModel();
             permissionDetail.name = req.body.name;
-            permissionDetail.url=req.body.url;
-            if(req.body.isChild){
-                permissionDetail.isChild=req.body.isChild;
-                console.log('Iffff',req.body.childName);
-                permissionDetail.childName=req.body.childName;
+            permissionDetail.url = req.body.url;
+            if (req.body.isChild) {
+                permissionDetail.isChild = req.body.isChild;
+                permissionDetail.childName = req.body.childName;
+                console.log('Child......', req.body.childName);
+                req.body.childName.forEach(element => {
+                    if (element.isSubChild) {
+                        permissionDetail.childName.subChildName = element.subChildName;
+                    }
+                });
             }
             console.log('Before Save Successfully.', permissionDetail);
 
