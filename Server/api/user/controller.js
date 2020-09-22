@@ -10,6 +10,7 @@ async function create(req, res) {
         userData.email =req.body.email;
         userData.phoneNo =req.body.phoneNo;
         userData.image = req.file.filename;
+        userData.roleRef=req.body.roleRef;
         let hash = bcrypt.hashSync(req.body.password, 10);
         userData.password = hash;
         console.log('Details=>',userData);
@@ -17,12 +18,15 @@ async function create(req, res) {
         if (response) {
             return res.send('Email Already Present.');
         }
-        await userData.save().exec();
+        console.log('before data save....');
+        await userData.save();
+        console.log('Data save successfully.......');
         return {
             status: 200,
             message: 'Document Save Successfull.'
         }
     } catch (error) {
+        console.log('Error.',error);
         return {
             status: 500,
             message: 'Internal Server Error.'
@@ -74,6 +78,7 @@ async function update(req, res) {
                                                 "email":req.body.email,
                                                 "phoneNo":req.body.phoneNo,
                                                 "password":hash,
+                                                "roleRef":req.body.roleRef,
                                                 "image": req.file.filename}});
         if (!record) {
             return Promise.reject('Record Not Found.');

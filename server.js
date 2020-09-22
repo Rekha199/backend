@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
 const cors=require('cors');
 //file include//
+// const file=require('./Server/helper/uploads')
 
 const db=require('./Server/core');
 const apiServer=require('./Server/index');
@@ -13,8 +14,11 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static('uploads'));
-
+app.use(express.static('./Server/helper/uploads'));
+// simple route
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to marketplace application." });
+  });
 app.use('/',apiServer.api);
 
 app.use(function(req,res,next){

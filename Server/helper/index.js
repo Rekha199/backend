@@ -1,3 +1,4 @@
 module.exports = {
-    fileUpload:require('./fileupload')
+    fileUpload:require('./fileupload'),
+    authService:require('./authService')
 }
