@@ -1,7 +1,9 @@
 const userModel = require('./model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const get = require('lodash/get');
-
+const { has } = require('lodash');
+const secretkey=require('../../../default.json').myprivatekey;
 async function create(req, res) {
     try {
         console.log('User Deatil.',req.body);
@@ -117,10 +119,46 @@ async function deleteRecord(req, res) {
         }
     }
 }
+async function checkLogin(req,res){
+    try{
+        console.log('Check Login ...',req.body);
+        let record =await userModel.findOne({'email':req.body.email});
+        if(!record){
+            return Promise.reject('Email Not Found.');
+        }
+        console.log('Record==>',record);
+        let hash = bcrypt.hashSync(req.body.password, 10);
+        console.log('pass==>',hash);
+        let result = await bcrypt.compare(req.body.password, record.password);
+        console.log('Result===>',result);
+        if (!result) {
+            throw new Error('Invalid Password');
+        }
+
+        let payload = { subject: record.email };
+        console.log('Payoad...',payload);
+        let token = jwt.sign(payload, secretkey);
+        console.log('Tolen::',token);
+        res.status(200).json({ status: 'success', message: 'success', doc: token });
+
+        return {
+            status: 200,
+            message: 'Login Successful.'
+        }
+
+    }
+    catch{
+        return{
+            status: 500,
+            message: 'Internal Server Error.'  
+        }
+    }
+}
 
 module.exports = {
     create,
     getRecord,
     update,
-    deleteRecord
+    deleteRecord,
+    checkLogin
 }
