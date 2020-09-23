@@ -24,14 +24,14 @@ async function deleteRecord(req, res) {
     let response = await controller.deleteRecord(req, res);
     res.status(response.status).json({ message: response.message });
 }
-async function login(req,res) {
+async function adminlogin(req,res) {
     console.log('Login...');
-    let response = await controller.checkLogin(req,res);
+    let response = await controller.checkAdminLogin(req,res);
     res.status(response.status).json({message: response.message});
 }
 
 router.post('/',fileUpload.single('image'), post);
-router.post('/login',login);
+router.post('/login',adminlogin);
 router.get('/?', authService, get);
 router.put('/?',fileUpload.single('image'), put);
 router.delete('/?', deleteRecord);

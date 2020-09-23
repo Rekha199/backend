@@ -119,7 +119,7 @@ async function deleteRecord(req, res) {
         }
     }
 }
-async function checkLogin(req,res){
+async function checkAdminLogin(req,res){
     try{
         console.log('Check Login ...',req.body);
         let record =await userModel.findOne({'email':req.body.email});
@@ -135,7 +135,7 @@ async function checkLogin(req,res){
             throw new Error('Invalid Password');
         }
 
-        let payload = { subject: record.email };
+        let payload = { subject: record.email ,role:record.roleRef};
         console.log('Payoad...',payload);
         let token = jwt.sign(payload, secretkey);
         console.log('Tolen::',token);
@@ -160,5 +160,5 @@ module.exports = {
     getRecord,
     update,
     deleteRecord,
-    checkLogin
+    checkAdminLogin
 }
