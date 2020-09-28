@@ -1,3 +1,4 @@
+
 const express= require('express');
 const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
@@ -13,7 +14,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static('uploads'));
+app.use(express.static(__dirname+'/Server/helper/uploads'));
 
 app.use('/',apiServer.api);
 

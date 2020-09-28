@@ -12,21 +12,43 @@ async function get(req,res){
     res.status(200).json({message:response.message});
 }
 
+
 async function put(req, res) {
     console.log('Put');
-    let response = await controller.update(req, res);
+    let response = await controller.update(req,res);
     res.status(response.status).json({ message: response.message });
 }
+
+async function put2(req, res) {
+    console.log('Put2');
+    let response = await controller.updateStatus(req,res);
+    res.status(response.status).json({ message: response.message });
+}
+
 async function deleteRecord(req, res) {
     console.log('Delete.');
     let response = await controller.deleteRecord(req, res);
     res.status(response.status).json({ message: response.message });
 }
 
+async function deleteAll(req,res){
+    let response = await controller.deleteAll(req,res);
+    res.status(response.status).json({ message: response.message });
+}
 
-router.post('/', post);
+async function adminlogin(req,res) {
+    console.log('Login...');
+    let response = await controller.checkAdminLogin(req,res);
+    res.status(response.status).json({message: response.message});
+}
+
+
+router.post('/', fileUpload.single('image'), post);
 router.get('/?', get);
-router.put('/?', put);
+router.post('/login',adminlogin);
+router.put('/?', fileUpload.single('image'), put);
+router.put('/status/?',put2);
 router.delete('/?', deleteRecord);
+router.delete('/dall', deleteAll);
 
 module.exports=router;

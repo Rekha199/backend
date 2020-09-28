@@ -7,6 +7,17 @@ async function create(req, res) {
         if (!req.query.id) {
             let permissionDetail = new permissionModel();
             permissionDetail.name = req.body.name;
+            permissionDetail.url = req.body.url;
+            if (req.body.hasChild) {
+                permissionDetail.hasChild = req.body.hasChild;
+                permissionDetail.childName = req.body.childName;
+                console.log('Child......', req.body.childName);
+                req.body.childName.forEach(element => {
+                    if (element.hasSubChild) {
+                        permissionDetail.childName.subChildName = element.subChildName;
+                    }
+                });
+            }
             console.log('Before Save Successfully.', permissionDetail);
 
             await permissionDetail.save();
@@ -57,7 +68,25 @@ async function getRecord(req, res) {
     }
 }
 
+async function deleteAll(req, res) {
+    try {
+        await permissionModel.deleteMany({ });
+        console.log('Document Delete Successful.');
+        return {
+            status: 200,
+            message: 'Document Delete Successful.'
+        }
+
+    } catch (error) {
+        return {
+            status: 500,
+            message: 'Internal Server Error.'
+        }
+    }
+}
+
 module.exports = {
     getRecord,
-    create
+    create,
+    deleteAll
 }
