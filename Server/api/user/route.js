@@ -39,10 +39,6 @@ async function adminlogin(req,res) {
 }
 
 
-async function deleteAll(req,res){
-    let response = await controller.deleteAll(req,res);
-    res.status(response.status).json({ message: response.message });
-}
 
 
 router.post('/', fileUpload.single('image'), post);
@@ -52,6 +48,6 @@ router.put('/?', fileUpload.single('image'), put);
 router.put('/status/?',put2);
 router.get('/?', authService, get);
 router.delete('/?', deleteRecord);
-router.delete('/dall', deleteAll);
+
 
 module.exports=router;
