@@ -157,6 +157,27 @@ async function checkAdminLogin(req,res){
     }
 }
 
+async  function updateStatus(req,res)
+{
+    try{
+        console.log(' Record TO Edit.', req.body, 'Id is',req.query.id);
+        let record = await userModel.findOneAndUpdate({ '_id': req.query.id }, req.body).exec();
+        if (!record) {
+            return Promise.reject('Record Not Found.');
+        }
+        return {
+            status: 200,
+            message: 'Document Update Successful.'
+        }
+    }
+    catch(error){
+        return{
+            status: 500,
+            message: 'Internal Server Error.'  
+        }
+    }
+}
+
 
 
 
