@@ -14,6 +14,7 @@ async function create(req, res) {
         userData.roleRef=req.body.roleRef;
         userData.phoneNo =req.body.phoneNo;
         userData.image = req.file.filename;
+        userData.roleRef=req.body.roleRef;
         let hash = bcrypt.hashSync(req.body.password, 10);
         userData.password = hash;
         console.log('Details=>',userData);
@@ -21,12 +22,15 @@ async function create(req, res) {
         if (response) {
             return res.send('Email Already Present.');
         }
-        await userData.save().exec();
+        console.log('before data save....');
+        await userData.save();
+        console.log('Data save successfully.......');
         return {
             status: 200,
             message: 'Document Save Successfull.'
         }
     } catch (error) {
+        console.log('Error.',error);
         return {
             status: 500,
             message: 'Internal Server Error.'
@@ -117,45 +121,6 @@ async function deleteRecord(req, res) {
         }
     }
 }
-
-async function deleteAll(req, res) {
-    try {
-        await userModel.deleteMany({ });
-        console.log('Document Delete Successful.');
-        return {
-            status: 200,
-            message: 'Document Delete Successful.'
-        }
-
-    } catch (error) {
-        return {
-            status: 500,
-            message: 'Internal Server Error.'
-        }
-    }
-}
-
-async  function updateStatus(req,res)
-{
-    try{
-        console.log(' Record TO Edit.', req.body, 'Id is',req.query.id);
-        let record = await userModel.findOneAndUpdate({ '_id': req.query.id }, req.body).exec();
-        if (!record) {
-            return Promise.reject('Record Not Found.');
-        }
-        return {
-            status: 200,
-            message: 'Document Update Successful.'
-        }
-    }
-    catch(error){
-        return{
-            status: 500,
-            message: 'Internal Server Error.'  
-        }
-    }
-}
-
 async function checkAdminLogin(req,res){
     try{
         console.log('Check Login ...',req.body);
@@ -184,14 +149,15 @@ async function checkAdminLogin(req,res){
         }
 
     }
-    catch(error){
-
+    catch(Error){
         return{
             status: 500,
             message: 'Internal Server Error.'  
         }
     }
 }
+
+
 
 
 module.exports = {
@@ -202,4 +168,5 @@ module.exports = {
     deleteAll,
     checkAdminLogin,
     updateStatus
+
 }

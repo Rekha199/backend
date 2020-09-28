@@ -9,7 +9,6 @@ async function create(req, res) {
         roleDetail.createdDate = get(req, 'body.createdDate', '');
         roleDetail.permissiondetails= get(req,'body.permissiondetails','');
         console.log('Before Save Successfully.',roleDetail);
-        
         await roleDetail.save();
         console.log('Document Save Successfully.');
         return {
@@ -28,7 +27,7 @@ async function create(req, res) {
 
 async function getRecord(req, res) {
     try {
-        console.log('GET REcord.....');
+        console.log('GET REcord.....',req.query.id);
         if(req.query.id){
             console.log(req.query.id);
             let record = await roleModel.findOne({ _id: req.query.id }).exec() ;

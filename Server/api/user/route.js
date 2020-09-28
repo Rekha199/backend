@@ -1,6 +1,8 @@
 const router=require('express').Router();
 const controller=require('./controller');
 const fileUpload = require('../../helper').fileUpload;
+const authService = require('../../helper').authService;
+
 async function post(req,res){
     console.log('Post');
     let response=await controller.create(req,res);
@@ -30,16 +32,16 @@ async function deleteRecord(req, res) {
     let response = await controller.deleteRecord(req, res);
     res.status(response.status).json({ message: response.message });
 }
-
-async function deleteAll(req,res){
-    let response = await controller.deleteAll(req,res);
-    res.status(response.status).json({ message: response.message });
-}
-
 async function adminlogin(req,res) {
     console.log('Login...');
     let response = await controller.checkAdminLogin(req,res);
     res.status(response.status).json({message: response.message});
+}
+
+
+async function deleteAll(req,res){
+    let response = await controller.deleteAll(req,res);
+    res.status(response.status).json({ message: response.message });
 }
 
 
@@ -48,6 +50,7 @@ router.get('/?', get);
 router.post('/login',adminlogin);
 router.put('/?', fileUpload.single('image'), put);
 router.put('/status/?',put2);
+router.get('/?', authService, get);
 router.delete('/?', deleteRecord);
 router.delete('/dall', deleteAll);
 

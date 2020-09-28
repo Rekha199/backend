@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var timestamps = require('mongoose-timestamp');
 const Schema = mongoose.Schema;
 
 var role = new Schema({
@@ -31,5 +32,5 @@ var role = new Schema({
     }
 
 });
-
+role.plugin(timestamps);
 module.exports = mongoose.model('role', role);
