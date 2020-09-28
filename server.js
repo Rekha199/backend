@@ -15,16 +15,16 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-<<<<<<< HEAD
+
 app.use(express.static(__dirname+'/Server/helper/uploads'));
 
-=======
-app.use(express.static('./Server/helper/uploads'));
+
+
 // simple route
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to marketplace application." });
   });
->>>>>>> ce719aad3a90fc4131fea12c892bf2712f8cd4de
+
 app.use('/',apiServer.api);
 
 app.use(function(req,res,next){
