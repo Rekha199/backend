@@ -8,21 +8,12 @@ async function create(req, res) {
             let permissionDetail = new permissionModel();
             permissionDetail.name = req.body.name;
             permissionDetail.url = req.body.url;
-<<<<<<< HEAD
             if (req.body.hasChild) {
                 permissionDetail.hasChild = req.body.hasChild;
                 permissionDetail.childName = req.body.childName;
                 console.log('Child......', req.body.childName);
                 req.body.childName.forEach(element => {
                     if (element.hasSubChild) {
-=======
-            if (req.body.isChild) {
-                permissionDetail.isChild = req.body.isChild;
-                permissionDetail.childName = req.body.childName;
-                console.log('Child......', req.body.childName);
-                req.body.childName.forEach(element => {
-                    if (element.isSubChild) {
->>>>>>> ce719aad3a90fc4131fea12c892bf2712f8cd4de
                         permissionDetail.childName.subChildName = element.subChildName;
                     }
                 });
