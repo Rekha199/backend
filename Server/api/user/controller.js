@@ -1,6 +1,9 @@
 const userModel = require('./model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const get = require('lodash/get');
+const { has } = require('lodash');
+const secretkey=require('../../../default.json').myprivatekey;
 
 async function create(req, res) {
     try {
@@ -8,8 +11,10 @@ async function create(req, res) {
         let userData = new userModel();
         userData.name =req.body.name;
         userData.email =req.body.email;
+        userData.roleRef=req.body.roleRef;
         userData.phoneNo =req.body.phoneNo;
         userData.image = req.file.filename;
+        userData.roleRef=req.body.roleRef;
         let hash = bcrypt.hashSync(req.body.password, 10);
         userData.password = hash;
         console.log('Details=>',userData);
@@ -17,12 +22,15 @@ async function create(req, res) {
         if (response) {
             return res.send('Email Already Present.');
         }
-        await userData.save().exec();
+        console.log('before data save....');
+        await userData.save();
+        console.log('Data save successfully.......');
         return {
             status: 200,
             message: 'Document Save Successfull.'
         }
     } catch (error) {
+        console.log('Error.',error);
         return {
             status: 500,
             message: 'Internal Server Error.'
@@ -70,10 +78,10 @@ async function update(req, res) {
         console.log(' Record TO Edit.', req.body, 'Id is',req.query.id);
         let hash = bcrypt.hashSync(req.body.password, 10);
         let record = await userModel.updateOne({ "_id": req.query.id}, 
-                                                { $set: { 'name':req.body.name ,
-                                                "email":req.body.email,
+                                                { $set: { 
                                                 "phoneNo":req.body.phoneNo,
                                                 "password":hash,
+                                                "roleRef":req.body.roleRef,
                                                 "image": req.file.filename}});
         if (!record) {
             return Promise.reject('Record Not Found.');
@@ -112,10 +120,72 @@ async function deleteRecord(req, res) {
         }
     }
 }
+async function checkAdminLogin(req,res){
+    try{
+        console.log('Check Login ...',req.body);
+        let record =await userModel.findOne({'email':req.body.email});
+        if(!record){
+            return Promise.reject('Email Not Found.');
+        }
+        console.log('Record==>',record);
+        let hash = bcrypt.hashSync(req.body.password, 10);
+        console.log('pass==>',hash);
+        let result = await bcrypt.compare(req.body.password, record.password);
+        console.log('Result===>',result);
+        if (!result) {
+            throw new Error('Invalid Password');
+        }
+
+        let payload = { subject: record.email ,role:record.roleRef};
+        console.log('Payoad...',payload);
+        let token = jwt.sign(payload, secretkey);
+        console.log('Tolen::',token);
+        res.status(200).json({ status: 'success', message: 'success', doc: token });
+
+        return {
+            status: 200,
+            message: 'Login Successful.'
+        }
+
+    }
+    catch(Error){
+        return{
+            status: 500,
+            message: 'Internal Server Error.'  
+        }
+    }
+}
+
+async  function updateStatus(req,res)
+{
+    try{
+        console.log(' Record TO Edit.', req.body, 'Id is',req.query.id);
+        let record = await userModel.findOneAndUpdate({ '_id': req.query.id }, req.body).exec();
+        if (!record) {
+            return Promise.reject('Record Not Found.');
+        }
+        return {
+            status: 200,
+            message: 'Document Update Successful.'
+        }
+    }
+    catch(error){
+        return{
+            status: 500,
+            message: 'Internal Server Error.'  
+        }
+    }
+}
+
+
+
 
 module.exports = {
     create,
     getRecord,
     update,
-    deleteRecord
+    deleteRecord,
+    checkAdminLogin,
+    updateStatus
+
 }

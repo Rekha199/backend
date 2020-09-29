@@ -6,9 +6,9 @@ async function create(req, res) {
         console.log('Role Deatail is', get(req, 'body', ''));
         let roleDetail = new roleModel();
         roleDetail.name = get(req, 'body.name', '');
-        roleDetail.permissionRefId= get(req,'body.permissionRefId','');
+        roleDetail.createdDate = get(req, 'body.createdDate', '');
+        roleDetail.permissiondetails= get(req,'body.permissiondetails','');
         console.log('Before Save Successfully.',roleDetail);
-        
         await roleDetail.save();
         console.log('Document Save Successfully.');
         return {
@@ -27,7 +27,7 @@ async function create(req, res) {
 
 async function getRecord(req, res) {
     try {
-        console.log('GET REcord.....');
+        console.log('GET REcord.....',req.query.id);
         if(req.query.id){
             console.log(req.query.id);
             let record = await roleModel.findOne({ _id: req.query.id }).exec() ;
@@ -85,8 +85,25 @@ async function deleteRecord(req, res) {
         if (!record) {
             return Promise.reject('Record Not Found.');
         }
-        record.isDeleteFlag = true;
+        record.isActive = false;
         await record.save();
+        console.log('Document Delete Successful.');
+        return {
+            status: 200,
+            message: 'Document Delete Successful.'
+        }
+
+    } catch (error) {
+        return {
+            status: 500,
+            message: 'Internal Server Error.'
+        }
+    }
+}
+
+async function deleteAll(req, res) {
+    try {
+        await roleModel.deleteMany({ });
         console.log('Document Delete Successful.');
         return {
             status: 200,
@@ -104,5 +121,6 @@ module.exports = {
     create,
     getRecord,
     update,
-    deleteRecord
+    deleteRecord,
+    deleteAll
 }

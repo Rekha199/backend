@@ -22,10 +22,19 @@ async function deleteRecord(req, res) {
     res.status(response.status).json({ message: response.message });
 }
 
+async function deleteAll(req, res) {
+    console.log('Delete.');
+    let response = await controller.deleteAll(req, res);
+    res.status(response.status).json({ message: response.message });
+}
+
+
+
 router.post('/', post);
 router.get('/?', get);
 router.put('/?', put);
 router.delete('/?', deleteRecord);
+router.delete('/dall', deleteAll);
 
 
 module.exports = router;

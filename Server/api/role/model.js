@@ -1,33 +1,36 @@
 const mongoose = require('mongoose');
+var timestamps = require('mongoose-timestamp');
 const Schema = mongoose.Schema;
 
 var role = new Schema({
     name: String,
-    permissionRefId:[{
-        permissionId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"permission"
-        } ,
-        isView:{
+    permissiondetails:[{
+        id:String,
+
+        label:String,
+
+        view_permission:{
             type:Boolean,
             default:false
         },
-        isEdit:{
+        add_permission:{
             type:Boolean,
             default:false
         },
-        isAdd:{
+        edit_permission:{
             type:Boolean,
             default:false
         }
     },
     
 ],
-    isDeleteFlag:{
+
+    createdDate: String,
+    isActive:{
         type:Boolean,
-        default:false
+        default:true
     }
 
 });
-
+role.plugin(timestamps);
 module.exports = mongoose.model('role', role);

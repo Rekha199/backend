@@ -12,8 +12,14 @@ async function get(req, res) {
     res.status(response.status).json({ message: response.message });
 }
 
+async function deleteAll(req,res){
+    let response = await controller.deleteAll(req,res);
+    res.status(response.status).json({ message: response.message });
+}
+
 router.post('/?', post);
 router.get('/', get);
+router.delete('/dall', deleteAll);
 
 
 module.exports = router;
