@@ -126,7 +126,7 @@ async function checkAdminLogin(req,res){
     
         if(req.body.email=='superadmin@gmail.com' && req.body.password=='123456')
         {
-            let payload = { subject: 'admin' ,role:'admin'};
+            let payload = { subject: req.body.email ,role:'admin'};
             console.log('Payoad...',payload);
             let token = jwt.sign(payload, secretkey);
             console.log('Tolen::',token);
