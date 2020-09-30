@@ -16,7 +16,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.use(express.static('./Server/helper/uploads'));
+
+//app.use(express.static('./Server/helper/uploads'));
+
+
+app.use(express.static(__dirname+'/Server/helper/uploads'));
+
 
 app.use('/',apiServer.api);
 

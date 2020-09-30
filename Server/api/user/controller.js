@@ -139,6 +139,7 @@ async function checkAdminLogin(req,res){
         }
         else
         {
+
             console.log('Check Login ...',req.body);
             let record =await userModel.findOne({'email':req.body.email});
             if(!record){
@@ -163,11 +164,12 @@ async function checkAdminLogin(req,res){
                 status: 200,
                 message: 'Login Successful.'
             }
+
         }
         
 
     }
-    catch(Error){
+    catch(error){
         return{
             status: 500,
             message: 'Internal Server Error.'  
@@ -205,6 +207,7 @@ async  function updateStatus(req,res)
             message: 'Document Update Successful.'
         }
     }
+
     catch(error){
         return{
             status: 500,
@@ -221,7 +224,6 @@ module.exports = {
     getRecord,
     update,
     deleteRecord,
-    deleteAll,
     checkAdminLogin,
     updateStatus
 
